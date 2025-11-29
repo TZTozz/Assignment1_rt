@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-        ],
+        'UI = assignment1_rt.UI:main',
+        'spawner = assignment1_rt.turtle_spawn:main'],
     },
 )

@@ -2,20 +2,21 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 from geometry_msgs.msg import Twist
+from rclpy.duration import Duration
 
 class UI(Node):
 
     def __init__(self):
         super().__init__('UI')
-        self.publisher1_ = self.create_publisher(Twist, 'turtle1', 10)
-        self.publisher2_ = self.create_publisher(Twist, 'turtle2', 10)
+        self.publisher1_ = self.create_publisher(Twist, 'turtle1/cmd_vel', 10)
+        self.publisher2_ = self.create_publisher(Twist, 'turtle2/cmd_vel', 10)
         
         timer_period = 0.1 
         self.timer = self.create_timer(timer_period, self.timer_callback)
         
         #Time
         self.start_time = self.get_clock().now()
-        self.lastTime = self.start_time
+        self.lastTime = self.start_time - Duration(seconds = 2.0) 
         self.duration = 1.0  #(s)
 
         self.message = Twist()
@@ -24,14 +25,14 @@ class UI(Node):
     def timer_callback(self):
         #Computed the elapsed time
         current_time = self.get_clock().now()
-        elapsed_time = (current_time - self.lastTime)
+        elapsed_time = (current_time - self.lastTime).nanoseconds / 1e9
         
 
         if elapsed_time > self.duration:        #More than a second
-            self.numTarta = input("Which turtle do you want to move? (1 or 2)")
-            self.vel = input("Velocity? ")
-            self.message.linear = self.vel
-            self.get_logger().info(f'The velocity of turtle_"{self.numTarta}" is "{self.message.linear}"')
+            self.numTarta = int(input("Which turtle do you want to move? (1 or 2) "))
+            self.vel = float(input("Velocity? "))
+            self.message.linear.x = self.vel
+            self.get_logger().info(f'The velocity of turtle_{self.numTarta} is {self.message.linear}')
             
             if self.numTarta == 1:
                 self.publisher1_.publish(self.message)
@@ -39,14 +40,16 @@ class UI(Node):
             elif self.numTarta == 2:
                 self.publisher2_.publish(self.message)
                 self.lastTime = self.get_clock().now()
-            else: self.get_logger().info('Error in the selection of the turtle')
+            else: self.get_logger().info(f'Error in the selection of the turtle: "{self.numTarta}"')
 
         else:       #Less than a second
-            self.get_logger().info(f'Still sending to turtle_"{self.numTarta}" the velocity of "{self.vel}"')
+            self.get_logger().info(f'Still sending to turtle_{self.numTarta} the velocity of {self.vel}')
             if self.numTarta == 1:
                 self.publisher1_.publish(self.message)
             elif self.numTarta == 2:
                 self.publisher2_.publish(self.message)
+        
+
             
 
 def main(args=None):
