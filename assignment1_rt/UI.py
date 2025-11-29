@@ -30,8 +30,10 @@ class UI(Node):
 
         if elapsed_time > self.duration:        #More than a second
             self.numTarta = int(input("Which turtle do you want to move? (1 or 2) "))
-            self.vel = float(input("Velocity? "))
+            self.vel = float(input("Linear velocity? "))
+            self.angular = float(input("Angular velocity? "))
             self.message.linear.x = self.vel
+            self.message.angular.z = self.angular
             self.get_logger().info(f'The velocity of turtle_{self.numTarta} is {self.message.linear}')
             
             if self.numTarta == 1:
@@ -43,7 +45,7 @@ class UI(Node):
             else: self.get_logger().info(f'Error in the selection of the turtle: "{self.numTarta}"')
 
         else:       #Less than a second
-            self.get_logger().info(f'Still sending to turtle_{self.numTarta} the velocity of {self.vel}')
+            self.get_logger().info(f'Still sending to turtle_{self.numTarta} the linear velocity of {self.vel} and angular velocity of {self.angular}')
             if self.numTarta == 1:
                 self.publisher1_.publish(self.message)
             elif self.numTarta == 2:
