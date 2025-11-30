@@ -9,15 +9,15 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(turtlesim REQUIRED)
-find_package(geometry_msgs)
+find_package(std_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
 add_executable(distance src/Distance.cpp)
-ament_target_dependencies(distance rclcpp)
+#ament_target_dependencies(distance rclcpp)
 
-ament_target_dependencies(distance rclcpp turtlesim geometry_msgs)
+ament_target_dependencies(distance rclcpp turtlesim std_msgs)
 
 install(TARGETS
   distance
