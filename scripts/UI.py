@@ -24,9 +24,11 @@ class UI(Node):
 
         self.message = Twist()
         self.needStop = False
+        self.firstStop = True
     
     def listener_callback(self, msg):
         self.needStop = msg.data
+        if self.firstStop: self.timeStop = self.get_clock().now()
         
 
     def timer_callback(self):
@@ -57,14 +59,30 @@ class UI(Node):
                     self.publisher1_.publish(self.message)
                 elif self.numTarta == 2:
                     self.publisher2_.publish(self.message)
+
+            self.firstStop = True
         else:                           #Stops the turtles
-            self.message.linear.x = 0.0
-            self.message.angular.z = 0.0
+            elapsed_time = (current_time - self.timeStop).nanoseconds / 1e9     #Time passed from the stop
+            
+            if self.firstStop:                                  #If it's the first time to stop
+                self.tempLinear = self.message.linear.x         #Save the turtle input
+                self.tempAngular = self.message.angular.z
+                self.firstStop = False
+
+            if elapsed_time < self.duration:        #Wait for a second
+                self.message.linear.x = 0.0
+                self.message.angular.z = 0.0
+                self.get_logger().info(f'Stopped turtle_{self.numTarta}')
+            else:                                   #Moves the turtle in the opposit direction
+                self.message.linear.x = -self.tempLinear
+                self.message.angular.z = -self.tempAngular
+                self.get_logger().info(f'Moving turtle_{self.numTarta} in the opposite direction')
+
             if self.numTarta == 1:
                     self.publisher1_.publish(self.message)
             elif self.numTarta == 2:
                     self.publisher2_.publish(self.message)
-            self.get_logger().info(f'Stopped turtle_{self.numTarta}')
+            
 
         
 
