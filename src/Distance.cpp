@@ -4,6 +4,8 @@
 #include "std_msgs/msg/bool.hpp"
 #include <cmath>
 
+#define threshold 2
+
 using std::placeholders::_1;
 
 class Distance: public rclcpp::Node
@@ -47,7 +49,7 @@ class Distance: public rclcpp::Node
             RCLCPP_INFO(this->get_logger(), "The distance is: %f", msg_distance.data);
             publisherDistance_->publish(msg_distance);
 
-            if (msg_distance.data < 2)
+            if (msg_distance.data < threshold || x1_ > 10.0 || x1_ < 1.0 || y1_ > 10.0 || y1_ < 1.0 || x2_ > 10.0 || x2_ < 1.0 || y2_ > 10.0 || y2_ < 1.0)
             {
                 msg_stop.data = true;
                 publisherStop_->publish(msg_stop);

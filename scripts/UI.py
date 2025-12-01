@@ -14,7 +14,7 @@ class UI(Node):
 
         self.subscription = self.create_subscription(Bool, 'stop', self.listener_callback, 10)
         
-        timer_period = 0.1 
+        timer_period = 0.01 
         self.timer = self.create_timer(timer_period, self.timer_callback)
         
         #Time
@@ -34,10 +34,19 @@ class UI(Node):
     def timer_callback(self):
         #Computed the elapsed time
         current_time = self.get_clock().now()
-        elapsed_time = (current_time - self.lastTime).nanoseconds / 1e9
+        elapsed_time_command = (current_time - self.lastTime).nanoseconds / 1e9
         
         if not self.needStop:
-            if elapsed_time > self.duration:        #More than a second
+
+            if elapsed_time_command > self.duration:        #More than a second
+                
+                #Stops both the turtles
+                self.message.linear.x = 0.0
+                self.message.angular.z = 0.0
+                self.publisher1_.publish(self.message)
+                self.publisher2_.publish(self.message)
+
+                #Ask the velocity
                 self.numTarta = int(input("Which turtle do you want to move? (1 or 2) "))
                 self.vel = float(input("Linear velocity? "))
                 self.angular = float(input("Angular velocity? "))
@@ -45,6 +54,7 @@ class UI(Node):
                 self.message.angular.z = self.angular
                 self.get_logger().info(f'The velocity of turtle_{self.numTarta} is {self.message.linear}')
                 
+                #Send it to the right turtle
                 if self.numTarta == 1:
                     self.publisher1_.publish(self.message)
                     self.lastTime = self.get_clock().now()
@@ -62,14 +72,14 @@ class UI(Node):
 
             self.firstStop = True
         else:                           #Stops the turtles
-            elapsed_time = (current_time - self.timeStop).nanoseconds / 1e9     #Time passed from the stop
+            elapsed_time_stop = (current_time - self.timeStop).nanoseconds / 1e9     #Time passed from the stop
             
             if self.firstStop:                                  #If it's the first time to stop
                 self.tempLinear = self.message.linear.x         #Save the turtle input
                 self.tempAngular = self.message.angular.z
                 self.firstStop = False
 
-            if elapsed_time < self.duration:        #Wait for a second
+            if elapsed_time_stop < self.duration:        #Wait for a second
                 self.message.linear.x = 0.0
                 self.message.angular.z = 0.0
                 self.get_logger().info(f'Stopped turtle_{self.numTarta}')
