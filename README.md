@@ -17,6 +17,11 @@
 ```
 mkdir -p ~/ros_ws/src
 ```
+### Install turtelsim
+```
+sudo apt update
+sudo apt install ros-jazzy-turtlesim
+```
 ### Clone the package
 ```
 cd ~/ros_ws/src
