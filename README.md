@@ -51,7 +51,7 @@ ros2 run assignment1_rt distance
 ```
 
 ## Nodes
-<img width="1099" height="223" alt="rosgraph" src="https://github.com/user-attachments/assets/9dc0af3a-4307-4f9d-9658-0ef15c1a1940" />
+<img alt="turtlesim (1)" src="https://github.com/user-attachments/assets/a7afc267-8dc2-4e1a-8fa9-a24f2d7b08b2" width="50%" height="50%"/>
 
 ### Spawner
 Spawn a second turtle in the `turtlesim_node`
