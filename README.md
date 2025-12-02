@@ -13,14 +13,14 @@
 - ROS2 Jazzy or newer
 - Ubuntu 24.04
 
-### Create the workspace
-```
-mkdir -p ~/ros_ws/src
-```
 ### Install turtelsim
 ```
 sudo apt update
 sudo apt install ros-jazzy-turtlesim
+```
+### Create the workspace
+```
+mkdir -p ~/ros_ws/src
 ```
 ### Clone the package
 ```
