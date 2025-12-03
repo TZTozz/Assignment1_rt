@@ -27,7 +27,7 @@ mkdir -p ~/ros_ws/src
 cd ~/ros_ws/src
 git clone https://github.com/TZTozz/Assignment1_rt.git
 cd ..
-colcon build
+colcon build --packages-select assignment1_rt
 ```
 
 ## Usage
