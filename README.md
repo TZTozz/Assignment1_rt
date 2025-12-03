@@ -31,6 +31,21 @@ colcon build --packages-select assignment1_rt
 ```
 
 ## Usage
+### Launcher file (konsole needed)
+Install konsole:
+```
+sudo apt install konsole
+```
+Setup the terminal:
+```
+cd ~/ros_ws
+source install/local_setup.sh
+```
+Launcher:
+```
+ros2 launch assignment1_rt pkg_launch.py
+```
+### Launching node by node
 For every new terminal:
 ```
 cd ~/ros_ws
@@ -70,8 +85,8 @@ Spawn a second turtle in the `turtlesim_node`
 | --- | --- | --- |
 | /pose | turtlesim/msg/Pose | Position of the turtle |
 | /cmd_vel | geometry_msgs/msg/Twist | Control the velocity of the turtle |
-| /stop | /std_msgs/msg/Bool | Is true if a turtle is in a prohibited zone |
-| /distance | /std_msgs/msg/Float32 | Distance between turtles |
+| /stop | std_msgs/msg/Bool | Is true if a turtle is in a prohibited zone |
+| /distance | std_msgs/msg/Float32 | Distance between turtles |
 
 
 
