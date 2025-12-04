@@ -48,8 +48,18 @@ class UI(Node):
 
                 #Ask the velocity
                 self.numTarta = int(input("Which turtle do you want to move? (1 or 2) "))
-                self.vel = float(input("Linear velocity? "))
-                self.angular = float(input("Angular velocity? "))
+                while True:
+                    try:
+                        self.vel = float(input("Linear velocity? "))
+                        break
+                    except ValueError:
+                        print("Error: not a valid input")
+                while True:
+                    try:
+                        self.angular = float(input("Angular velocity? "))
+                        break
+                    except ValueError:
+                        print("Error: not a valid input")
                 self.message.linear.x = self.vel
                 self.message.angular.z = self.angular
                 self.get_logger().info(f'The velocity of turtle_{self.numTarta} is {self.message.linear}')
